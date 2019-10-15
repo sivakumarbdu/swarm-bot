@@ -23,7 +23,7 @@ colors(){
 }
 
 create_secret(){
-  echo $value | docker secret create $key -
+	echo $value | docker secret create $key -
 }
 
 list_secrets(){
@@ -32,27 +32,26 @@ list_secrets(){
 
 connect_remote(){
 	eval $(docker-machine env $DOCKER_MACHINE_NAME)
-  echo "${yellow}Remote connected.${yellow}"
+	echo "${yellow}Remote connected.${yellow}"
 }
 
 disconnect_remote() {
 	eval $(docker-machine env -u )
-  echo "${yellow}Remote disconnected${yellow}."
+	echo "${yellow}Remote disconnected${yellow}."
 }
 
 registry_auth() {
-    echo "${yellow}Loging to Registry..${yellow}"
-    $LOGIN_REGISTRY
-    echo "${green}Done.${yellow}"
+	echo "${yellow}Loging to Registry..${yellow}"
+	$LOGIN_REGISTRY
+	echo "${green}Done.${yellow}"
 }
 
 check_deploy(){
-  deploy_lock=deploy.lock
-  if [ -e $deploy_lock ]
-  then
-    echo "Another deployment in progress. Exiting..."
-		exit 0;
-  fi
+	deploy_lock=deploy.lock
+	if [ -e $deploy_lock ]; then
+		echo "Another deployment in progress. Exiting..."
+		exit 0
+	fi
 }
 
 remove_deploy_lock(){
@@ -60,22 +59,21 @@ remove_deploy_lock(){
 }
 
 create_deploy_lock() {
- touch deploy.lock
+	touch deploy.lock
 }
 
 create(){
-  docker-machine create \
- --driver generic \
-  --generic-ssh-user $SERVER_USER \
- --generic-ip-address=$SERVER_IP \
-  $DOCKER_MACHINE_NAME
+	docker-machine create \
+	--driver generic \
+	--generic-ssh-user $SERVER_USER \
+	--generic-ip-address=$SERVER_IP \
+	$DOCKER_MACHINE_NAME
 }
- 
+
 pull_repository(){
-	for repo in "${REPOS[@]}"
-	do
-    docker pull $repo
- done
+	for repo in "${REPOS[@]}"; do
+		docker pull $repo
+	done
 }
 
 update_service_nginx(){
@@ -91,80 +89,79 @@ clean_unlinked_images(){
 
 colors
 
-
 case $service in
 	staging)
-	source deploy/staging.sh
-	export APP_ENV="staging"
+		source deploy/staging.sh
+		export APP_ENV="staging"
 	;;
 	production)
-	source deploy/production.sh
-	export APP_ENV="production"
+		source deploy/production.sh
+		export APP_ENV="production"
 	;;
 	*)
-	source deploy/dev.sh
-	export APP_ENV="dev"
+		source deploy/dev.sh
+		export APP_ENV="dev"
 esac
 
 
 case $command in
-  create)
-    create
-  ;;
+	create)
+		create
+	;;
 	init)
-    connect_remote
-    echo $SERVER_IP
-    docker swarm init --advertise-addr $SERVER_IP
-    disconnect_remote
+		connect_remote
+		echo $SERVER_IP
+		docker swarm init --advertise-addr $SERVER_IP
+		disconnect_remote
 	;;
 	update_service)
-	  connect_remote
+		connect_remote
 		echo ${STACK_NAME}_${service}
 		echo "${yellow}Updateing service : $2${yellow}"
 		docker-machine ssh $DOCKER_MACHINE_NAME "docker service update ${STACK_NAME}_${service}"
 		disconnect_remote
-		;;
+	;;
 	create_stack)
 		connect_remote
 		docker stack deploy --compose-file $COMPOSE_DEPLOY_FILE $STACK_NAME
 		disconnect_remote
-		;;
+	;;
 	deploy)
 		check_deploy
 		create_deploy_lock
 		connect_remote
 		registry_auth
- 		echo "${yellow}Pulling images${yellow}"
+		echo "${yellow}Pulling images${yellow}"
 		pull_repository
 		echo "${green}Done. ${yellow} Deploying..${yellow}"
 		docker stack deploy --compose-file $COMPOSE_DEPLOY_FILE $STACK_NAME --with-registry-auth
 		disconnect_remote
 		echo "${green}Deployment Done${normal}"
 		remove_deploy_lock
-		;;
+	;;
 
 	create_secret)
-	  connect_remote
+		connect_remote
 		key=$3
 		value=$4
-	  create_secret
+		create_secret
 		disconnect_remote
-		;;
-	 list_secret)
-	  connect_remote
-	  list_secrets
+	;;
+	list_secret)
+		connect_remote
+		list_secrets
 		disconnect_remote
-		;;
+	;;
 	log)
 		container=$3
 		echo  ${STACK_NAME}_${container}
 		docker-machine ssh $DOCKER_MACHINE_NAME "docker service logs ${STACK_NAME}_${container} -f"
-		;;
+	;;
 	clean)
-	  clean_unlinked_images
-		;;
-	  *)
+		clean_unlinked_images
+	;;
+	*)
 		echo "${red}commands not available${normal}"
- esac
+esac
 
 
