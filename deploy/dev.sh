@@ -3,7 +3,6 @@ echo "Setting vars...."
 SERVER_IP=127.0.0.1
 SERVER_USER=root
 DOCKER_MACHINE_NAME=machine01
-GIT_DEPLOY_BRANCH=master
 
 COMPOSE_DEPLOY_FILE=docker-compose.development.yml
 STACK_NAME=stack01
