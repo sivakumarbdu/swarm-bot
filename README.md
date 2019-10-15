@@ -46,6 +46,6 @@ To manage production environment, edit deploy/production.sh file and update prop
  
  Deploy to swarm cluster
  
- ``` ./swarm-bot deploy production
+ ``` ./swarm-bot deploy production ```
  
  
