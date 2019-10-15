@@ -2,6 +2,11 @@
 
 swarm-bot will help to to provision new swarm cluster with docker-machine.  Simple you can manage deploy with this bash script.
 
+### Requirement
+Before get started with swarm-bot, make sure you have installed docker, docker-machine and you have access to docker without sudo command.
+
+Check docker post installation steps https://docs.docker.com/install/linux/linux-postinstall/
+
 ### Environments
 
 swarm-bot allow to manage multiple environments. Right now its support to manage dev, staging and production environment.  Each environment will have dedicated config file under deploy folder.
@@ -36,4 +41,9 @@ To manage production environment, edit deploy/production.sh file and update prop
  ``` ./swarm-bot init production ```
  
  This will enable swarm mode and gives you manager and worker token.
+ 
+ ### Deploy swamr cluster
+ 
+ ``` ./swarm-bot deploy production
+ 
  
