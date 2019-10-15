@@ -42,7 +42,7 @@ To manage production environment, edit deploy/production.sh file and update prop
  
  This will enable swarm mode and gives you manager and worker token.
  
- ### Deploy swamr cluster
+ ### Deploy swarm cluster
  
  ``` ./swarm-bot deploy production
  
