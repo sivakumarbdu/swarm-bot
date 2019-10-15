@@ -13,7 +13,7 @@ swarm-bot allow to manage multiple environments. Right now its support to manage
 All server related configuration will be maintained here.
 
 
-### Create Swarm Cluster and adding  new node (Production Environment)
+### Configure Production Swarm cluster
 
 To manage production environment, edit deploy/production.sh file and update proper credentials.
 
@@ -25,3 +25,15 @@ To manage production environment, edit deploy/production.sh file and update prop
 * REPOS[0], REPOS[1] -> Add registry url for images to be puled. All images mentioned in docker-compose file should be give here to take updated.  If you don't want update then skip this.
 * REGISTRY_LOGIN -> Add command to loging to your registry.  E.g ``` docker login ```
 
+ ### Create Swarm Cluster and adding  new node (Production Environment)
+ 
+ To provision new server with docker
+ 
+ ``` ./swarm-bot create production ```
+ 
+ This will provision new server with Docker.  Then init Swarm mode on the server
+ 
+ ``` ./swarm-bot init production ```
+ 
+ This will enable swarm mode and gives you manager and worker token.
+ 
