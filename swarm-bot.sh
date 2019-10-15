@@ -78,13 +78,6 @@ pull_repository(){
  done
 }
 
-update_services(){
-for service in "${SERVICES[@]}"
-	do
-    docker service update ${STACK_NAMEweb-app}_${service}
- done
-}
-
 update_service_nginx(){
 	docker service update ${STACK_NAME}_${SERVICE_NGINX}
 }
@@ -145,19 +138,11 @@ case $command in
 		pull_repository
 		echo "${green}Done. ${yellow} Deploying..${yellow}"
 		docker stack deploy --compose-file $COMPOSE_DEPLOY_FILE $STACK_NAME --with-registry-auth
-		update_services
 		disconnect_remote
 		echo "${green}Deployment Done${normal}"
 		remove_deploy_lock
 		;;
 
-	restart)
-	  connect_remote
-		registry_auth
-		update_services
-		update_service_nginx
-		disconnect_remote
-		;;
 	create_secret)
 	  connect_remote
 		key=$3
