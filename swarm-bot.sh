@@ -104,6 +104,10 @@ case $service in
 	source deploy/staging.sh
 	export APP_ENV="staging"
 	;;
+	production)
+	source deploy/production.sh
+	export APP_ENV="production"
+	;;
 	*)
 	source deploy/dev.sh
 	export APP_ENV="dev"
