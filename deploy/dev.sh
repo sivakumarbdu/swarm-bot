@@ -6,7 +6,7 @@ DOCKER_MACHINE_NAME=machine01
 GIT_DEPLOY_BRANCH=master
 
 COMPOSE_DEPLOY_FILE=docker-compose.development.yml
-STACK_NAME=trybank-stack
+STACK_NAME=stack01
 DOCKER_FILE=Dockerfile.dev
 
 REPOS[0]=repourl/repo1:nginx.dev
