@@ -16,9 +16,12 @@ colors(){
 	red="$bold$(tput setaf 1)"                # bright red text
 	green=$(tput setaf 2)                     # dim green text
 	fawn=$(tput setaf 3); beige="$fawn"       # dark yellow text
-	yellow="$bold$fawn"                       # bright yellow text
 	darkblue=$(tput setaf 4)                  # dim blue text
 	purple=$(tput setaf 5); magenta="$purple" # magenta text
+  cyan=$(tput setaf 6);                     # cyan text
+	yellow="$bold$fawn"                       # bright yellow text
+
+  log_color="$cyan"
 # https://stackoverflow.com/questions/16843382/colored-shell-script-output-library
 }
 
@@ -32,16 +35,16 @@ list_secrets(){
 
 connect_remote(){
 	eval $(docker-machine env $DOCKER_MACHINE_NAME)
-	echo "${yellow}Remote connected.${yellow}"
+	echo "${log_color}Remote connected.${normal}"
 }
 
 disconnect_remote() {
 	eval $(docker-machine env -u )
-	echo "${yellow}Remote disconnected${yellow}."
+	echo "${log_color}Remote disconnected${normal}."
 }
 
 registry_auth() {
-	echo "${yellow}Loging to Registry..${yellow}"
+	echo "${log_color}Loging to Registry..${normal}"
 	$LOGIN_REGISTRY
 	echo "${green}Done.${yellow}"
 }
@@ -117,7 +120,7 @@ case $command in
 	update_service)
 		connect_remote
 		echo ${STACK_NAME}_${service}
-		echo "${yellow}Updateing service : $2${yellow}"
+		echo "${log_color}Updating service : $2${normal}"
 		docker-machine ssh $DOCKER_MACHINE_NAME "docker service update ${STACK_NAME}_${service}"
 		disconnect_remote
 	;;
@@ -131,9 +134,9 @@ case $command in
 		create_deploy_lock
 		connect_remote
 		registry_auth
-		echo "${yellow}Pulling images${yellow}"
+		echo "${log_color}Pulling images${normal}"
 		pull_repository
-		echo "${green}Done. ${yellow} Deploying..${yellow}"
+		echo "${green}Done. ${log_color} Deploying..${normal}"
 		docker stack deploy --compose-file $COMPOSE_DEPLOY_FILE $STACK_NAME --with-registry-auth
 		disconnect_remote
 		echo "${green}Deployment Done${normal}"
