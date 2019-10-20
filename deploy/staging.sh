@@ -16,3 +16,6 @@ SERVICES[0]=web
 SERVICES[1]=api
 
 SERVICE_NGINX=nginx
+
+DOCKER_IMAGE=image_name
+DOCKER_USERNAME=username

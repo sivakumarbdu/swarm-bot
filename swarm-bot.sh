@@ -87,6 +87,17 @@ clean_unlinked_images(){
 	echo "Cleanup done"
 }
 
+build_image(){
+	echo "${yellow}Building image with name $DOCKER_IMAGE:$1 ...${yellow}"
+	docker build -f $DOCKER_FILE --cache-from $DOCKER_IMAGE:latest -t $DOCKER_IMAGE:$1 .
+	docker tag $DOCKER_IMAGE:$1 $DOCKER_USERNAME/$DOCKER_IMAGE:$1
+}
+
+push_image() {
+	echo "${yellow}Pushing image $DOCKER_IMAGE:$1 ...${yellow}"
+	docker push $DOCKER_USERNAME/$DOCKER_IMAGE:$1
+}
+
 colors
 
 case $service in
@@ -159,6 +170,17 @@ case $command in
 	;;
 	clean)
 		clean_unlinked_images
+	;;
+	build)
+		if [ -z != $3 ]; then
+			TAG=$3
+		else
+			TAG=latest
+		fi
+
+		build_image $TAG
+		registry_auth
+		push_image $TAG
 	;;
 	*)
 		echo "${red}commands not available${normal}"
