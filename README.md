@@ -29,23 +29,35 @@ To manage production environment, edit deploy/production.sh file and update prop
 * STACK_NAME -> Name of the stack to be created on Master node.
 * REPOS[0], REPOS[1] -> Add registry url for images to be puled. All images mentioned in docker-compose file should be give here to take updated.  If you don't want update then skip this.
 * REGISTRY_LOGIN -> Add command to loging to your registry.  E.g ``` docker login ```
+* DOCKER_IMAGE -> The name to put in the image
+* DOCKER_USERNAME -> Your username on the docker hub
 
  ### Create Swarm Cluster and adding  new node (Production Environment)
- 
+
  To provision new server with docker
- 
+
  ``` ./swarm-bot create production ```
- 
+
  This will provision new server with Docker.  Then init Swarm mode on the server
- 
+
  ``` ./swarm-bot init production ```
- 
+
  This will enable swarm mode and gives you manager and worker token.
- 
+
  ### Deploy swarm cluster
- 
+
  Deploy to swarm cluster
- 
+
  ``` ./swarm-bot deploy production ```
- 
- 
+
+
+  ### Build and Push Image
+
+ Build and push the image
+
+ ``` ./swarm-bot build production ```
+
+ or to tag the image
+
+ ``` ./swarm-bot build production tag_name```
+
