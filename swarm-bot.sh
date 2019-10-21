@@ -161,4 +161,5 @@ case $command in
 		;;
 	*)
 		echo "${red}commands not available${normal}"
+        ;;
 esac
