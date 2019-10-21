@@ -1,4 +1,3 @@
-
 echo "Setting vars...."
 SERVER_IP=127.0.0.1
 SERVER_USER=root
